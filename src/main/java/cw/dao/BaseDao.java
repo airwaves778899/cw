@@ -75,14 +75,14 @@ public abstract class BaseDao {
     	}
 	}
 	
-	protected List queryBeanListData(String sql, Object[] params, Class clazz){
+	protected <T> List<T> queryBeanListData(String sql, Object[] params, Class<T> elementType){
     	Connection conn = null;
     	QueryRunner qr = new QueryRunner();
     	
     	try{
     		conn = this.getConnection();
     		
-    		return qr.query(conn, sql, new BeanListHandler(clazz), params);
+    		return qr.query(conn, sql, new BeanListHandler(elementType), params);
     		
     	}catch(SQLException e){
     		e.printStackTrace();
