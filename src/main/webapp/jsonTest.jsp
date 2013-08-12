@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="application/json"  pageEncoding="UTF-8"%>
 <%@ page import="net.sf.json.*"%>
-
+<%@ page import="cw.json.Classify"%>
 <%
-
+out.print(Classify.buildJson());
 %>
 
-
+<%--
 {
  "name": "flare",
  "children": [
@@ -386,3 +386,5 @@
   }
  ]
 }
+
+--%>
