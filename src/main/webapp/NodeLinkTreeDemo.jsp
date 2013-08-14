@@ -31,7 +31,7 @@
 <script>
 $(document).ready(function(){
 	$("#search").click(function(e){
-		$.get('<%=request.getContextPath()%>/jsonTest.jsp', function(data) {
+		$.get('ajax/query.do', function(data) {
 			draw(data);
 		});
 	});

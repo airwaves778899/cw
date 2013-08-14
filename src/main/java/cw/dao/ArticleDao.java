@@ -4,21 +4,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
 import org.apache.commons.collections.CollectionUtils;
 
 import cw.model.Article;
 import cw.model.KeyWord;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+@Repository("articleDao")
 public class ArticleDao extends BaseDao{
-    private static ArticleDao dao;
     
-    public static ArticleDao getInstance(){
-    	if(dao==null){
-    		dao = new ArticleDao();
-    	}
-    	
-    	return dao;
-    }
+    @Autowired
+    private KeywordDao keywordDao;
     
     /**
      * 刪除所有文章
@@ -60,7 +63,7 @@ public class ArticleDao extends BaseDao{
     	
     	//QUERY KEYWORDS
     	for(Article article : list){
-    		List<KeyWord> keywords = KeywordDao.getInstance().queryArticleKeywords(article.getId());
+    		List<KeyWord> keywords = keywordDao.queryArticleKeywords(article.getId());
     		
     		if(CollectionUtils.isNotEmpty(keywords)){
     			article.setKeyWords(new HashSet(keywords));
@@ -75,7 +78,7 @@ public class ArticleDao extends BaseDao{
      * @param articleId
      * @return
      */
-    public Article queryArticle(int articleId){
+    public Article queryArticle(int articleId){    	
     	String sql = "SELECT * FROM ARTICLE WHERE ID=?";
     	Object[] params = {articleId};
     	List<Article> list = this.queryBeanListData(sql, params, Article.class);
@@ -83,7 +86,7 @@ public class ArticleDao extends BaseDao{
     	if(CollectionUtils.isNotEmpty(list)){
     		Article article = list.get(0);
     		
-    		List<KeyWord> keywords = KeywordDao.getInstance().queryArticleKeywords(article.getId());
+    		List<KeyWord> keywords = keywordDao.queryArticleKeywords(article.getId());
     		if(CollectionUtils.isNotEmpty(keywords)){
     			article.setKeyWords(new HashSet<KeyWord>(keywords));
     		}
@@ -188,7 +191,7 @@ public class ArticleDao extends BaseDao{
     	if(CollectionUtils.isNotEmpty(article.getKeyWords())){
     		for(KeyWord keyword : article.getKeyWords()){
     			//建立keyword
-    			keyword = KeywordDao.getInstance().insertOrUpdateKeyWord(keyword);
+    			keyword = keywordDao.insertOrUpdateKeyWord(keyword);
     			
     			//建立Article & keyword關聯
     			insertArticleKeywordRelation(article.getId(), keyword.getId());

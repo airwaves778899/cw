@@ -33,6 +33,9 @@ $(document).ready(function(){
 	$("#search").click(function(e){
 		$.get('<%=request.getContextPath()%>/jsonTest.jsp', function(data) {
 			draw(data);
+			//$.getJSON('./flare.json', function(data) {
+			//	draw(data);
+			//});
 		});
 	});
 });
@@ -41,7 +44,7 @@ $(document).ready(function(){
 
 <script>
 
-function draw(data){alert(JSON.stringify(data));
+function draw(data){
 
 	var diameter = 960,
 	    format = d3.format(",d");

@@ -9,20 +9,13 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.ProxyFactory;
 import org.apache.commons.dbutils.wrappers.SqlNullCheckedResultSet;
+import org.springframework.stereotype.Repository;
 
 import cw.Constants;
 import cw.model.MasterChannel;
 
+@Repository("masterChannelDao")
 public class MasterChannelDao extends BaseDao{
-	private static MasterChannelDao dao;
-	
-	public static MasterChannelDao getInstance(){
-		if(dao==null){
-			dao = new MasterChannelDao();
-		}
-		
-		return dao;
-	}
 	
     public List<MasterChannel> queryAllMasterChannels(){
     	

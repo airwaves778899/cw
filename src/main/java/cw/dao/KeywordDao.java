@@ -4,20 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Repository;
 
 import cw.model.KeyWord;
 
+@Repository("keywordDao")
 public class KeywordDao extends BaseDao{
-	
-	private static KeywordDao dao;
-	
-	public static KeywordDao getInstance(){
-		if(dao==null){
-			dao = new KeywordDao();
-		}
-		
-		return dao;
-	}
 	
     public int deleteAllKeywords(){
     	int deleteItemCount = -1;

@@ -11,16 +11,9 @@ import org.junit.Test;
 import cw.html.parser.CwSubChannelHtmlParser;
 import cw.model.KeyWord;
 import cw.model.SubChannel;
+import cw.test.BaseTest;
 
-public class CwSubChannelHtmlParserTest {
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
+public class CwSubChannelHtmlParserTest extends BaseTest{
 
 	@Test
 	public void testExtractSubChannels() {

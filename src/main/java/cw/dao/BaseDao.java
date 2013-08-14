@@ -7,20 +7,43 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import cw.Constants;
 
 public abstract class BaseDao {
-	static {
-		DbUtils.loadDriver(Constants.DB_DRIVER);  
+//	static {
+//		//DbUtils.loadDriver(Constants.DB_DRIVER);  
+//	}	
+
+
+	private DataSource dataSource;
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+    @Qualifier("sqliteDataSource")
+	private void setDataSource(DataSource dataSource){
+		this.dataSource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	protected JdbcTemplate getJdbcTemplate(){
+		return this.jdbcTemplate;
 	}
 	
 	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(Constants.DB_URL);
+		return this.dataSource.getConnection();
 	}
 	
 	public void closeConnection(Connection conn){

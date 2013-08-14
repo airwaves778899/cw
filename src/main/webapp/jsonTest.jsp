@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="application/json"  pageEncoding="UTF-8"%>
 <%@ page import="net.sf.json.*"%>
-<%@ page import="cw.json.Classify"%>
+<%@ page import="cw.json.JasonDataBuilder"%>
 <%
-out.print(Classify.buildJson());
+out.print(JasonDataBuilder.buildCwJasonData());
 %>
 
 <%--

@@ -7,22 +7,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import cw.model.KeyWord;
 import cw.model.MasterChannel;
 import cw.model.SubChannel;
 
+@Repository("subChannelDao")
 public class SubChannelDao extends BaseDao{
 	
-	private static SubChannelDao dao;
-	
-	public static SubChannelDao getInstance(){
-		if(dao==null){
-			dao = new SubChannelDao();
-		}
-		
-		return dao;
-	}
+    @Autowired
+    private KeywordDao keywordDao;
 	
 	/**
 	 * 刪除所有次分類
@@ -44,7 +40,7 @@ public class SubChannelDao extends BaseDao{
     	List<SubChannel> list = this.queryBeanListData(sql, null, SubChannel.class);
     	
     	for(SubChannel subChannel : list){
-    		List<KeyWord> keywords = KeywordDao.getInstance().querySubChannelKeywords(subChannel.getId());
+    		List<KeyWord> keywords = keywordDao.querySubChannelKeywords(subChannel.getId());
     		
     		if(CollectionUtils.isNotEmpty(keywords)){
     		    subChannel.setKeyWords(new HashSet(keywords));
@@ -62,7 +58,7 @@ public class SubChannelDao extends BaseDao{
     	if(CollectionUtils.isNotEmpty(list)){
     		SubChannel subChannel = list.get(0);
     		
-    		List<KeyWord> keywords = KeywordDao.getInstance().querySubChannelKeywords(subChannel.getId());
+    		List<KeyWord> keywords = keywordDao.querySubChannelKeywords(subChannel.getId());
     		if(CollectionUtils.isNotEmpty(keywords)){
     		    subChannel.setKeyWords(new HashSet(keywords));
     		}
@@ -125,7 +121,7 @@ public class SubChannelDao extends BaseDao{
     	if(CollectionUtils.isNotEmpty(subChannel.getKeyWords())){
     		for(KeyWord keyword : subChannel.getKeyWords()){
     			//建立keyword
-    			keyword = KeywordDao.getInstance().insertOrUpdateKeyWord(keyword);
+    			keyword = keywordDao.insertOrUpdateKeyWord(keyword);
     			
     			//建立SubChannel & keyword關聯
     			insertSubChannelKeywordRelation(subChannel.getId(), keyword.getId());
@@ -147,5 +143,21 @@ public class SubChannelDao extends BaseDao{
     		this.insert("INSERT INTO SUBCHANNEL_KEYWORD(SUB_CHANNEL_ID, KEYWORD_ID) VALUES (?,?)",
     				new Object[]{subChannelId, keywordId});
     	}
+    }
+    
+    public List<SubChannel> querySubChannelsByMasterChannelId(int masterChannelId){
+    	String sql = "SELECT * FROM SUB_CHANNEL WHERE MASTER_CHANNEL_ID = ? ORDER BY ID";
+    	Object[] params = {masterChannelId};
+    	List<SubChannel> list = this.queryBeanListData(sql, params, SubChannel.class);
+    	
+    	for(SubChannel subChannel : list){
+    		List<KeyWord> keywords = keywordDao.querySubChannelKeywords(subChannel.getId());
+    		
+    		if(CollectionUtils.isNotEmpty(keywords)){
+    		    subChannel.setKeyWords(new HashSet(keywords));
+    		}
+    	}
+    	
+    	return list;
     }
 }

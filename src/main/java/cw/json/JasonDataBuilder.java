@@ -1,9 +1,67 @@
 package cw.json;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import cw.dao.MasterChannelDao;
+import cw.dao.SubChannelDao;
+import cw.model.KeyWord;
+import cw.model.MasterChannel;
+import cw.model.SubChannel;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@Service("jasonDataBuilder")
 public class JasonDataBuilder {
+	
+	@Autowired
+	private MasterChannelDao masterChannelDao;
+	
+	@Autowired
+	private SubChannelDao subChannelDao;
+	
+	public String buildCwJasonData(){
+		List<MasterChannel> masterChannels = masterChannelDao.queryAllMasterChannels();
+
+		MasterChannel masterChannel = masterChannels.get(0);
+		
+		JSONObject root = buildNode(masterChannel.getName());
+		
+		{
+			List<SubChannel> subChannels = subChannelDao.querySubChannelsByMasterChannelId(masterChannel.getId());
+		    for(SubChannel subChannel : subChannels){
+		    	JSONObject subChannelJSONObject = buildNode(subChannel.getId(), subChannel.getName());
+		    	
+		    	//KEY WORDS
+		    	if(CollectionUtils.isNotEmpty(subChannel.getKeyWords())){
+		    		int keywordCount = subChannel.getKeyWords().size();
+			    	String[] names = new String[keywordCount];
+			    	int[] size = new int[keywordCount];
+			    	
+			    	int index = 0;
+			    	for(KeyWord keyWord : subChannel.getKeyWords()){			    		
+			    		names[index] = keyWord.getWord();
+			    		size[index] = 0;			    		
+			    		index++;
+			    	}
+			    	
+			    	buildData(subChannelJSONObject, names, size);
+		    	}
+		    	
+		    	addChildNodeToParentNode(root, subChannelJSONObject);
+		    }
+		}
+		
+		System.out.println( root.toString(1) );
+		return root.toString(1);
+	}
+	
 	public static void buildData(JSONObject jsonObject, String[] names, int[] size){
 		
 		if(jsonObject.get("children")==null){
@@ -23,6 +81,15 @@ public class JasonDataBuilder {
 	public static JSONObject buildNode(String name){
 
 		JSONObject json = new JSONObject();
+		json.put("name", name);
+		
+		return json;
+	}
+	
+	public static JSONObject buildNode(int id, String name){
+
+		JSONObject json = new JSONObject();
+		json.put("id", id);
 		json.put("name", name);
 		
 		return json;
@@ -81,9 +148,5 @@ public class JasonDataBuilder {
 		}		
 		
 		return root.toString(2);
-	}
-	
-	public static void main(String args[]){
-		System.out.println(buildJson());
 	}
 }
