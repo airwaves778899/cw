@@ -11,9 +11,6 @@ public class Constants {
      */
     private static String defaultResourceName = "/cw.properties";
 	
-	public static String DB_DRIVER;
-	public static String DB_URL;
-	
 	public static String NULL_STRING = "N/A";
 	
 	public static String CW_URL;
@@ -28,10 +25,6 @@ public class Constants {
 		    //load a properties file
 			InputStream inStream = Constants.class.getResourceAsStream(defaultResourceName);
 			prop.load(inStream);
-			
-			//get the property value
-			DB_DRIVER = prop.getProperty("jdbc.driverClassName");
-			DB_URL = prop.getProperty("jdbc.url");
 			
 			//GET CW WEB URL
 			CW_URL = prop.getProperty("cw.url");

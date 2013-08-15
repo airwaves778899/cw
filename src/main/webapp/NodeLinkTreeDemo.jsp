@@ -14,7 +14,7 @@
 }
 
 .node {
-  font: 10px sans-serif;
+  font: 16px sans-serif;
 }
 
 .link {
@@ -29,11 +29,39 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
+$.ajaxSetup({cache: false});
+
 $(document).ready(function(){
-	$("#search").click(function(e){
-		$.get('ajax/query.do', function(data) {
-			draw(data);
+	//載入大分類
+	$.get('queryData/queryAllMasterChannels.do', function(list) {
+		$("#masterChannelSelect option").remove();
+		$("#masterChannelSelect").append('<option value=""></option>');
+		
+		$.each(list, function(index, masterChannel){
+			$("#masterChannelSelect").append('<option value="'+masterChannel.id+'">'+masterChannel.name+'</option>');
+		});		
+	});
+	
+	//載入次分類
+	$("#masterChannelSelect").change(function(e){
+		$("#subChannelSelect option").remove();	
+		
+		$.get('queryData/querySubChannels.do?masterChannelId='+$("#masterChannelSelect").val(), function(list) {			
+			
+			$("#subChannelSelect").append('<option value=""></option>');
+			
+			$.each(list, function(index, subChannel){
+				$("#subChannelSelect").append('<option value="'+subChannel.id+'">'+subChannel.name+'</option>');
+			});
 		});
+	});
+	
+	$("#query").click(function(e){
+		if( $("#masterChannelSelect").val() ){
+			$.get('queryData/queryJasonData.do?masterChannelId='+$("#masterChannelSelect").val(), function(data) {
+				draw( data );
+			});
+		}
 	});
 });
 
@@ -92,7 +120,16 @@ function draw(data){
 </head>
 <body>
 
-<button id="search">Search</button>
+<div>
+    <button id="query">QUERY</button>
+
+	<select id="masterChannelSelect">
+	</select>
+	
+    <select id="subChannelSelect">
+	</select>
+
+</div>
 
 <div id="drawdiv">
 

@@ -5,6 +5,10 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+
 import cw.dao.MasterChannelDao;
 import cw.dao.SubChannelDao;
 import cw.dao.ArticleDao;
@@ -15,26 +19,40 @@ import cw.model.Article;
 import cw.model.MasterChannel;
 import cw.model.SubChannel;
 
+@Service("cwDataBuild")
 public class CwDataBuild {
+	
+	@Autowired
+	private KeywordDao keywordDao;
+	
+	@Autowired
+	private ArticleDao articleDao;
+	
+	@Autowired
+	private MasterChannelDao masterChannelDao;
+	
+	@Autowired
+	private SubChannelDao subChannelDao;
+	
 	/**
 	 * 清除所有資料(非必要，不要使用)
 	 */
-    public static void cleanAllData(){
+    public void cleanAllData(){
     	int deleteItemCount;
     	
-    	deleteItemCount = KeywordDao.getInstance().deleteAllRelation();
+    	deleteItemCount = keywordDao.deleteAllRelation();
     	System.out.println("關鍵字關聯刪除筆數 = "+deleteItemCount);
     	
-    	deleteItemCount = KeywordDao.getInstance().deleteAllKeywords();
+    	deleteItemCount = keywordDao.deleteAllKeywords();
     	System.out.println("關鍵字刪除筆數 = "+deleteItemCount);
     	
-    	deleteItemCount = ArticleDao.getInstance().deleteAllArticles();
+    	deleteItemCount = articleDao.deleteAllArticles();
     	System.out.println("文章刪除筆數 = "+deleteItemCount);
     	
-    	deleteItemCount = SubChannelDao.getInstance().deleteAllSubChannels();
+    	deleteItemCount = subChannelDao.deleteAllSubChannels();
     	System.out.println("次分類刪除筆數 = "+deleteItemCount);
     	
-    	deleteItemCount = MasterChannelDao.getInstance().deleteAllMasterChannels();
+    	deleteItemCount = masterChannelDao.deleteAllMasterChannels();
     	System.out.println("大分類刪除筆數 = "+deleteItemCount);
 
     }
@@ -42,18 +60,18 @@ public class CwDataBuild {
     /**
      * 重建所有資料
      */
-    public static void rebuildAllData(){
+    public void rebuildAllData(){
 		CwMasterChannelHtmlParser parser = new CwMasterChannelHtmlParser();
 		
 		try {
 			Set<MasterChannel> list = parser.extractMasterChannels();
 			for(MasterChannel masterChannel : list){
 				//建立大分類資料
-				MasterChannelDao.getInstance().insertOrUpdateMasterChannel(masterChannel);
+				masterChannelDao.insertOrUpdateMasterChannel(masterChannel);
 				
 				for(SubChannel subChannel : masterChannel.getSubChannels()){
 					//建立次分類資料
-					SubChannelDao.getInstance().insertOrUpdateSubChannel(subChannel);
+					subChannelDao.insertOrUpdateSubChannel(subChannel);
 					
 					//建立文章資料
 					rebuildAllArticleData(subChannel);
@@ -68,7 +86,7 @@ public class CwDataBuild {
     /**
      * 重建所有文章資料
      */
-    public static void rebuildAllArticleData(List<SubChannel> subChannels){
+    public void rebuildAllArticleData(List<SubChannel> subChannels){
 		for(SubChannel subChannel : subChannels){
 			rebuildAllArticleData(subChannel);
 		}
@@ -78,22 +96,26 @@ public class CwDataBuild {
      * 重建所有文章資料
      * @param subChannel
      */
-    public static void rebuildAllArticleData(SubChannel subChannel){
+    public void rebuildAllArticleData(SubChannel subChannel){
 
 		CwArticleHtmlParser cwArticleHtmlParser = new CwArticleHtmlParser();
 		List<String> urls = cwArticleHtmlParser.extracLinksFromSubChannel(subChannel.getId());
 	
 		for(String url : urls){
 			Article article = cwArticleHtmlParser.extracLinkToArticle(url);
-			ArticleDao.getInstance().insertOrUpdateArticle(article);
+			articleDao.insertOrUpdateArticle(article);
 		}
     }
     
     public static void main(String args[]){
+		AnnotationConfigApplicationContext ctx = 
+	            new AnnotationConfigApplicationContext("cw");
+		CwDataBuild cwDataBuild = ctx.getBean(CwDataBuild.class);
+		
     	//清除所有資料
-    	//cleanAllData();
+		//cwDataBuild.cleanAllData();
     	
     	//重建所有資料
-    	rebuildAllData();
+		cwDataBuild.rebuildAllData();
     }
 }

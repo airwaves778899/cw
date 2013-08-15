@@ -6,8 +6,13 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.support.AbstractContextLoader;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import cw.dao.MasterChannelDao;
 import cw.dao.SubChannelDao;
@@ -26,10 +31,8 @@ public class JasonDataBuilder {
 	@Autowired
 	private SubChannelDao subChannelDao;
 	
-	public String buildCwJasonData(){
-		List<MasterChannel> masterChannels = masterChannelDao.queryAllMasterChannels();
-
-		MasterChannel masterChannel = masterChannels.get(0);
+	public JSONObject buildCwJasonData(int masterChannelId){
+		MasterChannel masterChannel = masterChannelDao.queryMasterChannel(masterChannelId);
 		
 		JSONObject root = buildNode(masterChannel.getName());
 		
@@ -58,8 +61,8 @@ public class JasonDataBuilder {
 		    }
 		}
 		
-		System.out.println( root.toString(1) );
-		return root.toString(1);
+		//System.out.println( root.toString(1) );
+		return root;
 	}
 	
 	public static void buildData(JSONObject jsonObject, String[] names, int[] size){
@@ -106,7 +109,7 @@ public class JasonDataBuilder {
 		}
 	}
 	
-	public static String buildJson(){
+	public String buildJson(){
 		JSONObject root = buildNode("flare");
 		
 		{
@@ -148,5 +151,14 @@ public class JasonDataBuilder {
 		}		
 		
 		return root.toString(2);
+	}
+	
+	public static void main(String args[]){
+		AnnotationConfigApplicationContext ctx = 
+	            new AnnotationConfigApplicationContext("cw");
+
+		JasonDataBuilder jasonDataBuilder = ctx.getBean(JasonDataBuilder.class);
+
+		System.out.println( jasonDataBuilder.buildCwJasonData(7) );
 	}
 }

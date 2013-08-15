@@ -22,21 +22,14 @@ import org.springframework.stereotype.Repository;
 import cw.Constants;
 
 public abstract class BaseDao {
-//	static {
-//		//DbUtils.loadDriver(Constants.DB_DRIVER);  
-//	}	
 
-
+    @Autowired
+    @Qualifier("sqliteDataSource")
 	private DataSource dataSource;
 	
+    @Autowired
+    @Qualifier("sqliteJdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-    @Qualifier("sqliteDataSource")
-	private void setDataSource(DataSource dataSource){
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 	
 	protected JdbcTemplate getJdbcTemplate(){
 		return this.jdbcTemplate;

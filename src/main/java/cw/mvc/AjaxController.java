@@ -1,11 +1,16 @@
 package cw.mvc;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import cw.json.JasonDataBuilder;
 import cw.service.ArticleService;
@@ -20,13 +25,9 @@ public class AjaxController {
 	@Resource
 	private JasonDataBuilder jasonDataBuilder;
 	
-	@RequestMapping(value = "/query.do", method = RequestMethod.GET)
-	public @ResponseBody String getData() {
-		System.out.println( "query..." );
-		
-		System.out.println( articleService );
-		System.out.println( articleService.queryArticleById(5000000) );
-		
-		return jasonDataBuilder.buildCwJasonData();
+	@RequestMapping(value = "/queryJasonData.do", method = RequestMethod.GET)
+	public @ResponseBody Object getJasonData(HttpServletResponse response) throws IOException {
+			return jasonDataBuilder.buildCwJasonData(7);
+
 	}
 }
