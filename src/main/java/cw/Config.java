@@ -14,14 +14,20 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 public class Config {
+	
+	private static ClassPathResource[] resources;
+	
+	static{
+		resources = new ClassPathResource[] { 
+				new ClassPathResource( "cw.properties" ) };
+	}
+	
 	@Bean
     public static PropertyPlaceholderConfigurer properties(){
-      PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-      ClassPathResource[] resources = new ClassPathResource[ ]
-        { new ClassPathResource( "cw.properties" ) };
-      ppc.setLocations( resources );
-      ppc.setIgnoreUnresolvablePlaceholders( true );
-      return ppc;
+        PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();      
+        ppc.setLocations( resources );
+        ppc.setIgnoreUnresolvablePlaceholders( true );
+        return ppc;
     }
      
     @Value( "${jdbc.url}" ) private String jdbcUrl;

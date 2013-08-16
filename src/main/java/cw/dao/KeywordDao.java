@@ -76,6 +76,22 @@ public class KeywordDao extends BaseDao{
     	return null;
     }
     
+	/**
+	 * 查詢關鍵字
+	 * @param word
+	 * @return
+	 */
+    public KeyWord queryKeyWordById(int id){
+    	Object[] queryParams = {id};
+    	String sql = "SELECT * FROM KEYWORD WHERE ID=? ";    	
+    	List<KeyWord> keyWords = this.queryBeanListData(sql, queryParams, KeyWord.class);
+    	if(CollectionUtils.isNotEmpty(keyWords)){
+    		return keyWords.get(0);
+    	}
+    	
+    	return null;    	
+    }
+    
     public int queryMaxId(){
     	List<Map<String, Object>> list = this.queryMapListData("SELECT MAX(ID) FROM KEYWORD ", null);
     	

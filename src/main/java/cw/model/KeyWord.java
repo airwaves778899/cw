@@ -24,9 +24,13 @@ public class KeyWord {
 		this.word = word;
 	}
 
+//	@Override
+//	public String toString() {
+//	    return ToStringBuilder.reflectionToString(this);
+//	}
 	@Override
 	public String toString() {
-	    return ToStringBuilder.reflectionToString(this);
+		return "KeyWord [id=" + id + ", word=" + word + "]";
 	}
 	
 	@Override
@@ -36,7 +40,7 @@ public class KeyWord {
 	        .append(word)
 	        .toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj){
 		if(obj instanceof KeyWord){
