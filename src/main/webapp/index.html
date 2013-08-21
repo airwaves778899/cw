@@ -11,33 +11,78 @@
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     
+    
     <script type="text/javascript" src="js/constants.js"></script>
-    <script type="text/javascript" src="js/pubs.js"></script>
     <script type="text/javascript" src="js/vis.js"></script>
-
+    <script type="text/javascript" src="js/pubs.js"></script>
+    
+	<!-- Google Analytics Tracker -->
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-97669-2']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+		  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+		
 <script>
 $.ajaxSetup({cache: false});
+
+var rawVenueData;
+var rawKeywordData;
+var rawAuthorData;
+var rawPubData;
+
+var itemsToLoad = 4;
+function onVisDataLoaded(itemsToLoad) {
+	if (itemsToLoad == 0) {
+		papersDisplayVis();
+	}
+}
+
+function papersDisplayVis() {
+    venuesLoaded(rawVenueData);
+    keywordsLoaded(rawKeywordData);
+    authorsLoaded(rawAuthorData);
+    pubsLoaded(rawPubData);
+	
+	displayPubs();
+	createVis(300, "large", true);
+	onresize();
+}
 </script>
 
 <script>
 $(document).ready(function(){
+	
 	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/venues/?limit=1000', function(data){
-		venuesLoaded(data);
+		rawVenueData = data;
+		itemsToLoad--; 
+		onVisDataLoaded(itemsToLoad);
 	});
 	
 	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/keywords/?limit=1000', function(data){
-		keywordsLoaded(data);
+		rawKeywordData = data;
+		itemsToLoad--; 
+		onVisDataLoaded(itemsToLoad);
 	});
 	
 	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/authors/?limit=1000', function(data){
-		authorsLoaded(data);
+		rawAuthorData = data;
+		itemsToLoad--; 
+		onVisDataLoaded(itemsToLoad);
 	});
 	
 	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/pubs/?limit=1000', function(data){
-		pubsLoaded(data);
+		rawPubData = data;
+		itemsToLoad--; 
+		onVisDataLoaded(itemsToLoad);
 	});
 	
-	onresize();
+
 });
 </script>
 
@@ -87,19 +132,11 @@ $(document).ready(function(){
 
 			<div style="width: 932px;" id="content">  <!--start content-->
 				<div id="vis">
-				    <button style="position: absolute; left: 10px;" onclick="clearFilters()">Reset</button>
-				    
+				    <br><br><br><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
 				</div>
-				</div><br/><br/>
+				</div>
 				
 				<div id="pubs" class="pub_list">
-				    <div id="num_papers" class="pub_heading">143 Publications<br><br></div>
-				    
-				    <span class="pub_heading">2013</span>
-				    <ol>
-				       <li>Resnik, P., Buzek, O., Kronrod, Y., Hu, C., Quinn, A. J., &amp; Bederson, B. B. (2013). <b><a target="_top" href="http://www.cs.umd.edu/~bederson/papers/index.html">Using Targeted Paraphrasing and Monolingual Crowdsourcing to Improve Translation</a></b>, in <em>ACM Transactions on Intelligent Systems and Technology</em>, (in press).</li>
-				       <li>Bonsignore, E., Quinn, A. J., Druin, A., &amp; Bederson, B. B. (2013). <b><a target="_top" href="http://www.cs.umd.edu/~bederson/papers/index.html">Sharing Stories ‘In The Wild’: A Mobile Storytelling Case Study using StoryKit</a></b>, in <em>ACM Transactions on Computer Human Interaction</em>, (in press).</li>
-				    </ol>
 				        
 				<div id="test"></div>        
 			</div>  <!--end content-->
