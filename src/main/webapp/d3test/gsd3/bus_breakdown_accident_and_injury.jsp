@@ -67,9 +67,14 @@ var data = [
             
 var margin = 50,
 	width = 700,
-	height = 300
-	x_extent = d3.extent(data, function(d){return d.collision_with_injury}),
-    y_extent = d3.extent(data, function(d){return d.dist_between_fail});
+	height = 300;
+
+//the maximum and minimum values of the data, using d3.extent:
+var x_extent = d3.extent(data, function(d){return d.collision_with_injury;});
+var y_extent = d3.extent(data, function(d){return d.dist_between_fail;});
+
+alert(x_extent);
+alert(y_extent);
     
 var x_scale = d3.scale.linear()
                 .range([margin,width-margin])
