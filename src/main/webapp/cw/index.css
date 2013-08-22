@@ -1,0 +1,157 @@
+.radio_button {
+	margin-left: 10px;
+}
+
+.pub_heading {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.pub_award {
+	color: rgb(255, 127, 14);
+}
+
+.key_bgnd {
+	fill: rgb(96, 175, 233);
+}
+
+.key_dot {
+	stroke: rgb(238, 238, 238);
+}
+
+.key_dot[display="true"] {
+	fill: orangered;
+	opacity: 0.4;
+}
+
+.tick {
+	stroke: black;
+}
+
+.key_label {
+	font-size: 0.8em;
+}
+
+.year_button {
+	fill: rgb(31, 119, 180);
+	stroke-width: 3;
+}
+
+#year_bar {
+	fill: rgb(31, 119, 180);
+	opacity: 0.7;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	color: rgb(51, 51, 51);
+	margin: 0px;
+	padding: 0px;
+	background: url('../images/bg-grad.jpg') repeat fixed 0% 0% rgb(204, 204, 204);
+}
+
+a:link,a:visited {
+	color: rgb(0, 95, 169);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h2 {
+	font: bold 114% Arial, sans-serif;
+	color: rgb(0, 102, 153);
+	margin: 0px;
+	padding: 0px;
+}
+
+h3 {
+	font: bold 100% Arial, sans-serif;
+	color: rgb(51, 77, 85);
+	margin: 0px;
+	padding: 0px;
+}
+
+.pub_list li {
+	margin-top: 0.6em;
+	margin-left: -10px;
+}
+
+#tl {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+#tr {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+#pagecell {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	right: 2%;
+	width: 98%;
+	background-color: rgb(255, 255, 255);
+}
+
+#pageNav {
+	float: left;
+	width: 250px;
+	padding: 0px;
+	background-color: rgb(245, 247, 247);
+	border-right: 1px solid rgb(204, 204, 204);
+	border-bottom: 1px solid rgb(204, 204, 204);
+	font: small Verdana, sans-serif;
+}
+
+#pageName {
+	padding: 0px 0px 14px 10px;
+	margin: 0px;
+	border-bottom: 1px solid rgb(204, 210, 210);
+}
+
+#pageName h2 {
+	font: bold 175% Arial, sans-serif;
+	color: rgb(0, 0, 0);
+	margin: 0px;
+	padding: 0px;
+}
+
+#pageName img {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+#content {
+	position: absolute;
+	left: 250px;
+	padding: 0px 10px;
+	margin: 0px;
+	border-left: 1px solid rgb(204, 210, 210);
+	width: auto;
+}
+
+.relatedLinks {
+	margin: 0px;
+	border-bottom: 1px solid rgb(204, 204, 204);
+	padding: 0px 0px 10px 10px;
+}
+
+.relatedLinks h3 {
+	padding: 10px 0px 2px;
+	font-size: medium;
+}
