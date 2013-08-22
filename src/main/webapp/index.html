@@ -3,148 +3,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>CW</title>
-    
-    <link rel="stylesheet" type="text/css" href="index.css" media="all">
 
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    
-    <script type="text/javascript" src="js/constants.js"></script>
-    <script type="text/javascript" src="js/vis.js"></script>
-    <script type="text/javascript" src="js/pubs.js"></script>
-    
-	<!-- Google Analytics Tracker -->
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-97669-2']);
-		_gaq.push(['_trackPageview']);
-		(function() {
-		  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
-		
-<script>
-$.ajaxSetup({cache: false});
-
-var rawVenueData;
-var rawKeywordData;
-var rawAuthorData;
-var rawPubData;
-
-var itemsToLoad = 4;
-function onVisDataLoaded(itemsToLoad) {
-	if (itemsToLoad == 0) {
-		papersDisplayVis();
-	}
-}
-
-function papersDisplayVis() {
-    venuesLoaded(rawVenueData);
-    keywordsLoaded(rawKeywordData);
-    authorsLoaded(rawAuthorData);
-    pubsLoaded(rawPubData);
 	
-	displayPubs();
-	createVis(300, "large", true);
-	onresize();
-}
-</script>
-
-<script>
-$(document).ready(function(){
-	
-	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/venues/?limit=1000', function(data){
-		rawVenueData = data;
-		itemsToLoad--; 
-		onVisDataLoaded(itemsToLoad);
-	});
-	
-	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/keywords/?limit=1000', function(data){
-		rawKeywordData = data;
-		itemsToLoad--; 
-		onVisDataLoaded(itemsToLoad);
-	});
-	
-	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/authors/?limit=1000', function(data){
-		rawAuthorData = data;
-		itemsToLoad--; 
-		onVisDataLoaded(itemsToLoad);
-	});
-	
-	$.get('http://hcil2.cs.umd.edu/bederson/pubs/pubs/pubs/?limit=1000', function(data){
-		rawPubData = data;
-		itemsToLoad--; 
-		onVisDataLoaded(itemsToLoad);
-	});
-	
-
-});
-</script>
-
 </head>
 
 <body>
-		<div id="pagecell"> 			
-			<div id="pageName">
-				<h2>CW</h2>
-			</div>
 
-			<div id="pageNav">  <!--start pageNav-->
-				<div class="relatedLinks"> 
-				
-				<button id="search">Search</button>
-				
-					<h3>Publications</h3>
-					Search: <input value="" id="search_box" type="text">
-
-					<br><br>
-					<input id="citation_button" checked="checked" type="checkbox">Show full citation
-					<br>
-
-					<br><br>
-					Group by:<br>
-					<div class="radio_button">
-						<input class="group_button" id="year_button" name="group_by" checked="checked" type="radio"> <a class="group_link" href="javascript:;">Year</a><br>
-						<input class="group_button" id="venue_type_button" name="group_by" type="radio"> <a class="group_link" href="javascript:;">Pub type</a><br>
-						<input class="group_button" id="venue_button" name="group_by" type="radio"> <a class="group_link" href="javascript:;">Venue</a>
-					</div>
-					
-					<br>
-					Filter by:<br>
-					<div class="radio_button" id="filter">
-					    <input id="no_keyword_filter" class="filter_button" keyword="None (show all)" name="filter" checked="checked" type="radio"> <a class="filter_link" href="javascript:;">None (show all)</a><br>
-					    <input id="Children" class="filter_button" keyword="Children" name="filter" type="radio"> <a class="filter_link" href="javascript:;">Children <font size="1">(32)</font></a><br>
-					    <input id="Computer_Vision" class="filter_button" keyword="Computer Vision" name="filter" type="radio"> <a class="filter_link" href="javascript:;">Computer Vision <font size="1">(11)</font></a><br>
-					    <input id="Digital_Libraries" class="filter_button" keyword="Digital Libraries" name="filter" type="radio"> <a class="filter_link" href="javascript:;">Digital Libraries <font size="1">(21)</font></a><br>
-					    <input id="Education" class="filter_button" keyword="Education" name="filter" type="radio"> <a class="filter_link" href="javascript:;">Education <font size="1">(20)</font></a><br>
-					    <input id="Hardware" class="filter_button" keyword="Hardware" name="filter" type="radio"> <a class="filter_link" href="javascript:;">Hardware <font size="1">(9)</font></a><br>
-					</div>
-				
-				</div>
-			<div style="height: 8816px;" id="vertical_filler"></div>
-
-			</div>  <!--end pageNav-->
-
-			<div style="width: 932px;" id="content">  <!--start content-->
-				<div id="vis">
-				    <br><br><br><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
-				</div>
-				</div>
-				
-				<div id="pubs" class="pub_list">
-				        
-				<div id="test"></div>        
-			</div>  <!--end content-->
-		</div>  <!--end pagecel--> 
-		
-		
-		
-	
+	<ul>
+	    <li><a href="cw/cw_index.html">CW</a></li>
+	    <li><a href="d3test/D3TestHome.jsp">D3 TEST</a></li>
+	</ul>
 
 </body>
 
