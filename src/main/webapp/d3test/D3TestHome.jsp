@@ -50,6 +50,7 @@
 		<ul>
 			<li><a href="#" onclick="addTab('Plaza Traffic','gsd3/mean_daily_plaza_traffic.jsp')">Plaza Traffic</a></li>
 			<li><a href="#" onclick="addTab('Bus Breakdown Accident And Injury','gsd3/bus_breakdown_accident_and_injury.jsp')">Bus Breakdown Accident And Injury</a></li>
+			<li><a href="#" onclick="addTab('Turnstile Traffic','gsd3/turnstile_traffic.jsp')">Turnstile Traffic</a></li>
 			<li><a href="#" onclick="addTab('Line Tension','LineTension.jsp')">Line Tension</a></li>
 		</ul>
 
