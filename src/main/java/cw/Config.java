@@ -1,5 +1,11 @@
 package cw;
 
+import java.util.LinkedHashSet;
+
+import io.searchbox.client.JestClient;
+import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.config.ClientConfig;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +26,23 @@ public class Config {
 	static{
 		resources = new ClassPathResource[] { 
 				new ClassPathResource( "cw.properties" ) };
+	}
+	
+	@Value( "${elasticsearch.server.url}" ) private String elasticsearchServerUrl;
+	
+	public @Bean
+	ClientConfig clientConfig() {
+		ClientConfig clientConfig = new ClientConfig.Builder(
+				elasticsearchServerUrl).multiThreaded(true).build();
+		return clientConfig;
+	}
+	
+	public @Bean @Qualifier("jestClient")
+	JestClient jestClient() {
+		// Construct a new Jest client according to configuration via factory
+		JestClientFactory factory = new JestClientFactory();
+		factory.setClientConfig(clientConfig());
+		return factory.getObject();
 	}
 	
 	@Bean
