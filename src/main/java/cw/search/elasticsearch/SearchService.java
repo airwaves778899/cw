@@ -3,8 +3,11 @@ package cw.search.elasticsearch;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Bulk;
+import io.searchbox.core.Bulk.Builder;
 import io.searchbox.core.Index;
 
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +46,18 @@ public class SearchService {
 		return result.isSucceeded();
 	}
 	
-	public boolean indexArticles(List<Article> articles) throws Exception{
-		Index _index = new Index.Builder(articles).index(index).type(Article_TYPE).build();
-		JestResult result = jestClientUtil.execute(_index);
-		return result.isSucceeded();
+	public void indexArticles(List<Article> articles) throws Exception{
+		Builder bulk = new Bulk.Builder();
+
+		for(Article article : articles){
+			bulk.addAction( new Index.Builder(article).index(index).type(Article_TYPE).build() );
+		}
+		
+		jestClientUtil.execute(bulk.build());
+	}
+	
+	public void searchArticles() throws Exception{
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 	}
 	
 }
