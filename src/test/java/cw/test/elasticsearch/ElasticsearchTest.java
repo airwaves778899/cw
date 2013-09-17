@@ -1,6 +1,7 @@
 package cw.test.elasticsearch;
 
 import static org.junit.Assert.*;
+import io.searchbox.core.Get;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,11 +29,26 @@ public class ElasticsearchTest extends BaseTest{
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	@Test
+	public void testDeleteIndex() {
+		try {
+			searchService.deleteIndex();
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}finally{
+			try {
+				searchService.closeIndex();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Test
 	public void testIndexArticles() {
 		try {
-			//searchService.deleteIndex();
 			searchService.openIndex();
 			
 			searchService.indexArticles( articleService.queryAllArticles() );
@@ -46,7 +62,26 @@ public class ElasticsearchTest extends BaseTest{
 				e.printStackTrace();
 			}
 		}
-		//fail("Not yet implemented");
+
+	}
+	
+	@Test
+	public void testSearchArticles() {
+		try {
+			searchService.openIndex();
+			
+			searchService.searchArticles();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}finally{
+			try {
+				searchService.closeIndex();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
