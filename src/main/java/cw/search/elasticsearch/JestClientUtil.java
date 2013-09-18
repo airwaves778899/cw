@@ -24,6 +24,10 @@ public class JestClientUtil {
 	@Autowired
 	@Qualifier("jestClient")
 	public JestClient client;
+	
+	public JestResult indicesExists(String index) throws Exception{  
+		return client.execute(new IndicesExists.Builder().build());    
+	}
     
     public JestResult openIndex(String index) throws Exception{    	
     	return client.execute(new OpenIndex.Builder(index).build());    	
@@ -45,12 +49,16 @@ public class JestClientUtil {
     	return new Index.Builder(source).index(index).type(type).build();
     }
     
-    public Update updatDocuments(Object source, String index, String type){
-    	return new Update.Builder(source).index(index).type(type).build();
-    }
+//    public Update updatDocuments(Object source, String index, String type){
+//    	return new Update.Builder(source).index(index).type(type).build();
+//    }
     
     public Update updatDocument(Object source, String index, String type, String id){
     	return new Update.Builder(source).index(index).type(type).id(id).build();
+    }
+    
+    public Update updatDocument(Object source, String index, String type){
+    	return new Update.Builder(source).index(index).type(type).build();
     }
     
     public Delete deleteDocument(String index, String type, String id){

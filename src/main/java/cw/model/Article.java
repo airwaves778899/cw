@@ -1,5 +1,7 @@
 package cw.model;
 
+import io.searchbox.annotations.JestId;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +14,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 文章
  */
 public class Article {
+	@JestId
 	private int id;
+	
 	private String title;
 	private String author;
 	private String mimeType;
